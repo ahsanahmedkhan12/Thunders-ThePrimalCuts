@@ -11,6 +11,7 @@
 			</div>
 			<div class="col-lg-9 col-md-8 rightside">
 				<h4>Personail Detail</h4>
+				<hr>
 			</div>
 		</div>
 	</div>

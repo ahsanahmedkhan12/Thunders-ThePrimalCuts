@@ -11,7 +11,7 @@
 			</div>
 			<div class="col-lg-9 col-md-8 rightside">
 				<h4>Dashboard</h4>
-
+                
 				<h5>Order Area : </h5>
 				<hr>
 				<div class="row">
@@ -19,21 +19,21 @@
 			            <!-- small box -->
 			            <div class="small-box bg-info">
 			              <div class="inner">
-			                <h3>150</h3>
+			                <h3>{{$ordertotal}}</h3>
 
 			                <p>Orders</p>
 			              </div>
 			              <div class="icon">
 			                <i class="bi bi-cart-fill"></i>
 			              </div>
-			              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+			              <a href="{{url('user/order-history')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
 			            </div>
 			        </div>
 			        <div class="col-lg-3 col-6">
 			            <!-- small box -->
 			            <div class="small-box bg-success">
 			              <div class="inner">
-			                <h3>150</h3>
+			                <h3>{{$completetotal}}</h3>
 
 			                <p>Complete Orders</p>
 			              </div>
@@ -47,7 +47,7 @@
 			            <!-- small box -->
 			            <div class="small-box bg-danger">
 			              <div class="inner">
-			                <h3>150</h3>
+			                <h3>{{$pendingtotal}}</h3>
 
 			                <p>Pending Orders</p>
 			              </div>
@@ -65,7 +65,7 @@
 			            <!-- small box -->
 			            <div class="small-box bg-warning">
 			              <div class="inner">
-			                <h3>$.{{number_format('150.99',2)}}</h3>
+			                <h3>Rs.{{number_format($sumtotal)}}</h3>
 
 			                <p>Total Amount </p>
 			              </div>

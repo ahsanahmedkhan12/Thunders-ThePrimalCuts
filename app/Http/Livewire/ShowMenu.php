@@ -12,7 +12,7 @@ class ShowMenu extends Component
 {
     public $category;
     public $checkboxValue = [];
-    public $totalValue = 0.00 , $Value;
+    public $totalValue = 0 , $Value;
     public $quantity = 1;
     protected $listeners = ['refreshmenu' => 'render'];
     public function increaseQuantity()
@@ -31,35 +31,41 @@ class ShowMenu extends Component
 
     public function updateTotalValue($Valueid, $index, $totalprice)
     {
-        $this->Value = AddOnMenu::where('id' , $Valueid)->first();
+        // Retrieve the addon menu value
+        $this->Value = AddOnMenu::where('id', $Valueid)->first();
 
-            if ($this->checkboxValue[$index]) {
-               if(!empty($this->Value)){
-                   if($this->totalValue ==  0.00){
-                       $this->totalValue += $this->Value->price + $totalprice;
-                   }else{
-                        $this->totalValue += $this->Value->price;
-                   }
-                }else{                         
-                    $this->totalValue  = 0.00;
-                    $this->checkboxValue = [];
-                    return  session()->flash('error', 'Refresh the page internet is slow.'); 
+        // Check if the checkbox value is selected
+        if ($this->checkboxValue[$index]) {
+            if (!empty($this->Value)) {
+                // Add the value price to the total value
+                if ($this->totalValue == 0) {
+                    $this->totalValue += $this->Value->price + $totalprice;
+                } else {
+                    $this->totalValue += $this->Value->price;
                 }
             } else {
-                if(!empty($this->Value)){
-                   if($this->totalValue ==  0.00){
-                       $this->totalValue -= $this->Value->price + $totalprice;
-                   }else{
-                        $this->totalValue -= $this->Value->price;
-                   }
-                }else{  
-                $this->checkboxValue = []  ;                     
-                    $this->totalValue  = 0.00;
-                    return  session()->flash('error', 'Refresh the page internet is slow.'); 
-                }
+                // Reset the total value and checkbox value if the value is empty
+                $this->totalValue = 0;
+                $this->checkboxValue = [];
+                return session()->flash('error', 'Refresh the page internet is slow.');
             }
-        
+        } else {
+            if (!empty($this->Value)) {
+                // Subtract the value price from the total value
+                if ($this->totalValue == 0) {
+                    $this->totalValue -= $this->Value->price + $totalprice;
+                } else {
+                    $this->totalValue -= $this->Value->price;
+                }
+            } else {
+                // Reset the total value and checkbox value if the value is empty
+                $this->checkboxValue = [];
+                $this->totalValue = 0;
+                return session()->flash('error', 'Refresh the page internet is slow.');
+            }
+        }
     }
+ 
     public function render()
     {
         $cart = Cart::content();
@@ -82,7 +88,7 @@ class ShowMenu extends Component
         Cart::add(['id' =>  $menu->id, 'name' =>  $menu->name, 'qty' =>  $this->quantity, 'price' => $price , 'weight' => 0, 'options' => $this->checkboxValue]);
        $this->checkboxValue = [];
        $this->quantity = 1;
-       $this->totalValue = 0.00;
+       $this->totalValue = 0;
        $this->emit('refreshcartcounter');
        $this->emit('refreshcartshow');
        $this->emit('closemodal');

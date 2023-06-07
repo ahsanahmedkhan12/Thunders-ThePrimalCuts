@@ -11,7 +11,6 @@
 
   <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  <div id="preloader"></div>
 
 
 <script src="{{asset('assets/vendor/aos/aos.js')}}"></script>
@@ -83,6 +82,7 @@ $(document).ready(function() {
     $(".services-sub-nav").animate( { scrollLeft: '-=460' }, 200);
   });
 });
+
 
  $(document).ready(function() {
     $(".toggle-password").click(function() {

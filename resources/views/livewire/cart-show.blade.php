@@ -40,7 +40,7 @@
                 @endforeach
             </div>
             @endif
-            <div style="font-size: 16px; color: var(--color-primary); font-weight: 600;">Rs.{{number_format($cartdata->price, 2)}}</div>
+            <div style="font-size: 16px; color: var(--color-primary); font-weight: 600;">Rs.{{number_format($cartdata->price)}}</div>
         </div>
         @empty
         <div style="text-align: center;">

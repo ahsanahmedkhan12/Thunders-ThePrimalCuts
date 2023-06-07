@@ -123,7 +123,7 @@
                 </div> 
 
                 <div class="form-row">
-                    <div class="form-group col-md-6" wire:ignore.self>
+                    <div class="form-group col-md-6" >
                         <label>Price: <sup class="red" style="font-size: 16px;">*</sup></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -131,7 +131,7 @@
                             </div>
                        
                             
-                              <input id="price" type="text" class=" rounded-0 form-control @error('price') is-invalid @enderror"  wire:model="price" placeholder="Enter the price" data-inputmask="'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'placeholder': '0'" data-mask >
+                              <input id="price" type="text" class=" rounded-0 form-control @error('price') is-invalid @enderror"  wire:model="price" placeholder="Enter the price">
                               <br>
                               @error('price')
                                     <span class="invalid-feedback" role="alert">

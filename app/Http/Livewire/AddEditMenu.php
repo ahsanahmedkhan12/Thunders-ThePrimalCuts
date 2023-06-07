@@ -33,10 +33,10 @@ class AddEditMenu extends Component
         'image'=>['required','mimes:jpg,png,jpeg,webp','max:3000','dimensions:width=612,height=408'],
         'relationship.*.branch'=>['required','distinct','regex:/^[a-zA-Z0-9\s\-]*$/','max:50','min:30'],
         'relationship.*.category'=>['required','regex:/^[a-zA-Z0-9\s\-]*$/','max:50','min:30'],
-        'price'=>['required','regex:/^\d{1,3}(,\d{3})*(\.\d\d)?$/','max:50','min:4'],
+        'price'=>['required','regex:/^[0-9]*$/','max:50','min:1'],
         'description'=>['nullable','regex:/^[a-zA-Z0-9\s\-\,\.\(\)\’]*$/','max:250','min:3'],
         'addonmenu.*.addonname'=>['nullable','distinct','regex:/^[a-zA-Z0-9\s]*$/','max:150','min:3'],
-        'addonmenu.*.addonprice'=>['nullable','regex:/^\d{1,3}(,\d{3})*(\.\d\d)?$/','max:50','min:4'],
+        'addonmenu.*.addonprice'=>['nullable','regex:/^[0-9]*$/','max:50','min:1'],
     ];
 
     protected $messages = [
@@ -53,7 +53,7 @@ class AddEditMenu extends Component
             'addonmenu.*.addonprice.required'=>'This Add-On Price is required ',
         
             'addonmenu.*.addonname.regex'=>'Only allow alphabet or number ',
-            'addonmenu.*.addonprice.regex'=>'Only allow dollar pattran ',
+            'addonmenu.*.addonprice.regex'=>'Only allow pkr pattran ',
 
             'addonmenu.*.addonname.max'=>'Maximum value 150',
             'addonmenu.*.addonprice.max'=>'Maximum value 50 ',
@@ -189,9 +189,6 @@ class AddEditMenu extends Component
         }
 
         foreach ($this->relationship as $key => $value) {
-            $price = $this->price;
-            $price = str_replace(',', '', $price);
-
             // Create a new menu item
             $menu = Menu::create([
                 'branch_id' => $value['branch'],
@@ -199,7 +196,7 @@ class AddEditMenu extends Component
                 'name' => Str::title($this->name),
                 'slug'  => $this->slug,
                 'image' => $filename,
-                'price' => $price,
+                'price' => $this->price,
                 'description' => Str::ucfirst($this->description),
                 'meta_title' => Str::title($this->name),
                 'meta_description'  => Str::title($this->name),
@@ -218,12 +215,10 @@ class AddEditMenu extends Component
                         unset($this->addonmenu[$key]);
                         $this->addonmenu = array_values($this->addonmenu);
                     } else {
-                        $addonprice = $v['addonprice'];
-                        $addonprice = str_replace(',', '', $addonprice);
                         $branchtime = AddOnMenu::create([
                             'menu_id' => $menu->id,
                             'name' => $v['addonname'],
-                            'price' => $addonprice,
+                            'price' => $v['addonprice'],
                             'position' => $key,
                         ]);
                     }

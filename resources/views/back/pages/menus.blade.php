@@ -117,6 +117,92 @@
         });
         
     });
+      $(document).on('click', '.selectdel', function(){
+            var rid = [];
+            if(confirm("Are you sure you want to Delete this data?"))
+            {
+                $('.checkboxsingle:checked').each(function(){
+                    rid.push($(this).val());
+                });
+                if(rid.length > 0)
+                {
+                    $.ajax({
+                        url:"/control-area/menus-selected-delete/"+rid,
+                        method:"get",
+                         dataType:"json",
+                        data:{id:rid},
+                        success:function(data)
+                        {
+                            if(data.success){
+                            var successmsg = '';
+                            successmsg = '<div class="alert alert-success">' + data.success + '</div>';
+                            window.setTimeout(function() {
+                                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                                $(this).remove(); 
+                                });
+                            }, 3000);
+                             setTimeout(function(){
+                                 
+                                    $('#myTable').DataTable().ajax.reload();
+                                }, 1000);
+                            $('#status_message_success').html(successmsg);   
+                            }
+                        }
+                           
+                    });
+                }
+                else
+                {
+                    alert("Please select atleast one checkbox");
+                }
+            }
+      });
+      $(document).on('click', '.alldel', function(){
+            var categoryid = [];
+            if(confirm("Are you sure you want to Delete all data?"))
+            {
+                $.ajax({
+                    url:"/control-area/menus-all-delete",
+                    method:"get",
+                    dataType:"json",
+                        success:function(data)
+                        {
+                            if(data.success){
+                            var successmsg = '';
+                            successmsg = '<div class="alert alert-success">' + data.success + '</div>';
+                            window.setTimeout(function() {
+                                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                                $(this).remove(); 
+                                });
+                            }, 3000);
+                             setTimeout(function(){
+                                 
+                                    $('#myTable').DataTable().ajax.reload();
+                                }, 1000);
+                            $('#status_message_success').html(successmsg);   
+                            }else if (data.error){
+                                var errormsg = '';
+                                errormsg = '<div class="alert alert-danger">' + data.error + '</div>';
+                                window.setTimeout(function() {
+                                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                                    $(this).remove(); 
+                                    });
+                                }, 3000);
+                                 setTimeout(function(){
+                                     
+                                        $('#myTable').DataTable().ajax.reload();
+                                    }, 1000);
+                                $('#status_message_success').html(errormsg);  
+                            }
+                        }
+                           
+                           
+                        
+                    });
+               
+            }
+    });  
+
 
 </script>        
 

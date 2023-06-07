@@ -112,8 +112,25 @@
             </ul>
           </li>
           <li class="nav-item">
+            <a href="#" class="nav-link {{'control-area/order-history' == request()->path() ? 'active' : ''}}">
+              <i class="nav-icon ion ion-bag"></i>
+              <p>
+                Order History
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{url('/control-area/order-history')}}" class="nav-link {{'control-area/order-history' == request()->path() ? 'active' : ''}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>View Order History</p>
+                </a>
+              </li>           
+            </ul>
+          </li>
+          <li class="nav-item">
             <a href="#" class="nav-link {{'control-area/user-contacts' == request()->path() ? 'active' : ''}} ">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-envelope"></i>
               <p>
                 Contacts
                 <i class="fas fa-angle-left right"></i>
@@ -124,6 +141,29 @@
                 <a href="{{url('/control-area/user-contacts')}}" class="nav-link {{'control-area/user-contacts' == request()->path() ? 'active' : ''}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>View Contact</p>
+                </a>
+              </li>        
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link {{'control-area/database-backup' == request()->path() ? 'active' : ''}} {{'control-area/database-restore' == request()->path() ? 'active' : ''}}">
+              <i class="nav-icon fas fa-database"></i>
+              <p>
+                Database
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{url('/control-area/database-backup')}}" class="nav-link {{'control-area/database-backup' == request()->path() ? 'active' : ''}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Database Backup</p>
+                </a>
+              </li>  
+               <li class="nav-item">
+                <a href="{{url('/control-area/database-restore')}}" class="nav-link {{'control-area/database-restore' == request()->path() ? 'active' : ''}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Database Restore</p>
                 </a>
               </li>        
             </ul>

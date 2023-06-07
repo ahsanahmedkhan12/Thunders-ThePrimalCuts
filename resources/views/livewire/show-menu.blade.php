@@ -15,7 +15,7 @@
                 </div>
                 <h4>{{ Str::limit($data->name, 25) }}</h4>
                 <div class="row">
-                  <div class="col-lg-4 col-md-4 col-sm-4 col-4" style="font-weight: 600;display: flex;align-items: center;font-size: 18px;color: var(--color-primary);">Rs.{{$data->price}}</div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-4" style="font-weight: 600;display: flex;align-items: center;font-size: 18px;color: var(--color-primary);">Rs.{{number_format($data->price)}}</div>
                  
                     @if ($cart->where('id',$data->id)->count())
                       @php
@@ -57,7 +57,7 @@
                                 <div style="margin-left: 10px;"><h6><strong>{{$addondata->name}}</strong></h6></div>
                                 </div>
                                 
-                                <div><p class="price">Rs.{{$addondata->price}}</p></div>
+                                <div><p class="price">Rs.{{number_format($addondata->price)}}</p></div>
                             </div>
                             @empty
                             <div style="text-align: center;">
@@ -77,10 +77,10 @@
                       </div>
                       <div class="modal-footer justify-content-between">
                          
-                           @if(number_format($totalValue ,2) == "0.00" || number_format($totalValue ,2) == $data->price)
-                           <div style="font-size: 16px;font-weight: 600; color: #000;">$.{{$data->price}} </div>
+                           @if($totalValue == "0" || $totalValue == $data->price)
+                           <div style="font-size: 16px;font-weight: 600; color: #000;">Rs.{{number_format($data->price)}} </div>
                            @else
-                                <div style="font-size: 16px;font-weight: 600; color: var(--color-primary);">$.{{number_format($totalValue ,2)}}</div>
+                                <div style="font-size: 16px;font-weight: 600; color: var(--color-primary);">Rs.{{number_format($totalValue)}}</div>
                            @endif
                           <div class="d-flex">
                             

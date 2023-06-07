@@ -55,7 +55,12 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                        </div> 
+                        </div>
+                         <input class="form-check-input my-2" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+
+                                    <label class="form-check-label" for="remember">
+                                        {{ __('Remember Me') }}
+                                    </label> 
 				        <div class="form-group">
 		                    <input type="submit" value="Login" id="submitbtn">
 						</div>	

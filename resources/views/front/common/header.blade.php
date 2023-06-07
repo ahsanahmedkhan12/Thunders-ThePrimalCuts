@@ -1,5 +1,6 @@
+   <div id="preloader"></div>
    <div style="color: #ffffff;background: #262626;display: flex;     height: 24px;">
-     <div class="container">  <marquee onmouseover="stop()" onmouseout="start()"><strong>Welcome to The Primal Cuts - Get 15% OFF on your first order.</strong></marquee></div>
+     <div class="container">  <marquee onmouseover="stop()" onmouseout="start()"><strong>Welcome to The Primal Cuts - Get Fresh Halal Meat Order.</strong></marquee></div>
    </div>
   <div class="top-header  d-flex align-items-center">
       <div class="container d-flex align-items-center justify-content-between justify-content-centr-important">

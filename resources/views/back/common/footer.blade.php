@@ -38,7 +38,9 @@
      window.addEventListener('Swal',function(e){
         Swal.fire(e.detail);
       });
-
+  $(".checkboxall").change(function(){
+        $(".checkboxsingle").prop("checked", $(this).prop("checked"))
+    });
 </script>
 @stack('js')
 @livewireScripts

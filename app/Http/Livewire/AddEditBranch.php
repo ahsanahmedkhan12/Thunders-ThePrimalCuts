@@ -85,22 +85,24 @@ class AddEditBranch extends Component
     {
         $this->validateOnly($propertyName);
     }
-
     public function submit()
-    { 
-        $this->validate();
-        if($this->weekday == []){
-           $this->dispatchBrowserEvent('Swal',[
-                'title'=>'Week Day is required',
-                'icon'=>'error',
-            ]);
+{ 
+    // Validate the form data
+    $this->validate();
 
-        }else{
-     
+    // Check if the weekday is not selected
+    if ($this->weekday == []) {
+        $this->dispatchBrowserEvent('Swal',[
+            'title'=>'Week Day is required',
+            'icon'=>'error',
+        ]);
+    } else {
+        // Process the image
         $img   = Image::make($this->image)->encode('webp');
         $img->resize(570, 300);
         $filename  = Str::random() . '.webp';
 
+        // Create a new branch record
         $branch = Branch::create([
             'name' => Str::title($this->name),
             'slug'  => $this->slug,
@@ -111,26 +113,93 @@ class AddEditBranch extends Component
             'meta_description'  => Str::title($this->name),
             'meta_keyword' => Str::title($this->name),
         ]);
+
+        // Store the image file
         Storage::disk('public')->put($filename, $img);
-            foreach ($this->weekday as $key => $value) {
-                $branchtime = BranchTime::create([
-                    'branch_id' => $branch->id,
-                    'weekday_id' => $value,
-                    'start_time' => $this->starttime,
-                    'stop_time' => $this->closetime,
-                    'position' => $key
-                ]);
-            }            
 
+        // Create branch time records for selected weekdays
+        foreach ($this->weekday as $key => $value) {
+            $branchtime = BranchTime::create([
+                'branch_id' => $branch->id,
+                'weekday_id' => $value,
+                'start_time' => $this->starttime,
+                'stop_time' => $this->closetime,
+                'position' => $key
+            ]);
+        }
 
+        // Display success message
         $this->dispatchBrowserEvent('Swal',[
             'title'=>'Branch Add Successfully',
             'icon'=>'success',
-
         ]);
+
+        // Reset the input fields and redirect to the branches page
         $this->resetinput();
         return redirect()->to('/control-area/branches');
-       }
-        
     }
+   
+}
+ protected function cleanupOldUploads()
+    {
+        $storage = Storage::disk('local');
+
+        foreach ($storage->allFiles('livewire-tmp') as $filePathname) {
+
+            if (! $storage->exists($filePathname)) continue;
+
+            $yesterdaysStamp = now()->subSeconds(4)->timestamp;
+            if ($yesterdaysStamp > $storage->lastModified($filePathname)) {
+                $storage->delete($filePathname);
+            }
+        }
+    }
+
+    // public function submit()
+    // { 
+    //     $this->validate();
+    //     if($this->weekday == []){
+    //        $this->dispatchBrowserEvent('Swal',[
+    //             'title'=>'Week Day is required',
+    //             'icon'=>'error',
+    //         ]);
+
+    //     }else{
+     
+    //     $img   = Image::make($this->image)->encode('webp');
+    //     $img->resize(570, 300);
+    //     $filename  = Str::random() . '.webp';
+
+    //     $branch = Branch::create([
+    //         'name' => Str::title($this->name),
+    //         'slug'  => $this->slug,
+    //         'image' => $filename,
+    //         'phone' => $this->phone,
+    //         'address' => $this->address,
+    //         'meta_title' => Str::title($this->name),
+    //         'meta_description'  => Str::title($this->name),
+    //         'meta_keyword' => Str::title($this->name),
+    //     ]);
+    //     Storage::disk('public')->put($filename, $img);
+    //         foreach ($this->weekday as $key => $value) {
+    //             $branchtime = BranchTime::create([
+    //                 'branch_id' => $branch->id,
+    //                 'weekday_id' => $value,
+    //                 'start_time' => $this->starttime,
+    //                 'stop_time' => $this->closetime,
+    //                 'position' => $key
+    //             ]);
+    //         }            
+
+
+    //     $this->dispatchBrowserEvent('Swal',[
+    //         'title'=>'Branch Add Successfully',
+    //         'icon'=>'success',
+
+    //     ]);
+    //     $this->resetinput();
+    //     return redirect()->to('/control-area/branches');
+    //    }
+        
+    // }
 }

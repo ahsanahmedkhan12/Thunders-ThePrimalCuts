@@ -15,6 +15,7 @@ use Validator;
 use Illuminate\Support\Str;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 class BackendCategoriesController extends Controller
 {
     public function index(Request $request){
@@ -100,4 +101,38 @@ class BackendCategoriesController extends Controller
             }
         } 
     } 
+    public function multipledelete(Request $request){
+        
+        $r_id = $request->input('id');
+        $r = Category::whereIn('id', $r_id);  
+        $deleteimages = Category::whereIn('id', $r_id)->get();
+        
+        foreach ($deleteimages as $deleteimage) {
+
+             if(Storage::exists('public/'.$deleteimage->image)){
+                Storage::delete('public/'.$deleteimage->image);
+            }
+        }
+ 
+        if($r->delete())
+         return response()->json(['success' => 'Category Seleted Data Deleted Successfully']);   
+    }
+
+    public function alldelete(){
+        $data = DB::table('categories')->get();
+      
+        foreach ($data as $imagePath) {
+
+      
+            if(Storage::exists('public/'.$imagePath->image)){
+                Storage::delete('public/'.$imagePath->image);
+            }
+        }
+        $rdel = DB::table('categories')->delete();
+        if($rdel == true ){
+            return response()->json(['success' => 'Categories Seleted Data Deleted Successfully']); 
+        }else {
+          return response()->json(['error' => 'Categories table is empty']); 
+         }
+    }
 }

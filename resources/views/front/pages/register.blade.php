@@ -43,7 +43,7 @@
 			            @enderror
 		            </div> 
 		            <div class="form-group" style="    margin-top: 15px;">       
-			            <label>Phone<sup>*</sup> <span style="    color: #8b8b8b;font-size: 12px;">Ex.(111) 111-1111</span></label>
+			            <label>Phone<sup>*</sup> <span style="    color: #8b8b8b;font-size: 12px;">Ex.03243123456</span></label>
 					    <input id="pphone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone"  value="{{ old('phone') }}" >
 		  
 			            @error('phone')

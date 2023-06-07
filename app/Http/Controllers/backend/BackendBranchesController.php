@@ -14,6 +14,7 @@ use Validator;
 use Str;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 class BackendBranchesController extends Controller
 {
     public function index(Request $request){
@@ -146,5 +147,40 @@ class BackendBranchesController extends Controller
                return view('back.pages.addedit-branch')->with(compact('title','branchdata'));
             }
         } 
+    }
+
+    public function multipledelete(Request $request){
+        
+        $r_id = $request->input('id');
+        $r = Branch::whereIn('id', $r_id);  
+        $deleteimages = Branch::whereIn('id', $r_id)->get();
+        
+        foreach ($deleteimages as $deleteimage) {
+
+             if(Storage::exists('public/'.$deleteimage->image)){
+                Storage::delete('public/'.$deleteimage->image);
+            }
+        }
+ 
+        if($r->delete())
+         return response()->json(['success' => 'Branch Seleted Data Deleted Successfully']);   
+    }
+
+    public function alldelete(){
+        $data = DB::table('branches')->get();
+      
+        foreach ($data as $imagePath) {
+
+      
+            if(Storage::exists('public/'.$imagePath->image)){
+                Storage::delete('public/'.$imagePath->image);
+            }
+        }
+        $rdel = DB::table('branches')->delete();
+        if($rdel == true ){
+            return response()->json(['success' => 'Branch Seleted Data Deleted Successfully']); 
+        }else {
+          return response()->json(['error' => 'Branch table is empty']); 
+         }
     }
 }

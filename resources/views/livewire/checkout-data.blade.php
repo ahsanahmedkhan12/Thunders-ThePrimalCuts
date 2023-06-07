@@ -47,7 +47,7 @@
                         </div>
 
                         <div class="d-flex align-items-center justify-content-between" style="    margin-top: 20px;">
-                            <h5 class="m-0">Pickup Time Slot : </h5>                     
+                            <h5 class="m-0">Delivery Time Slot : </h5>                     
                         </div>
                         <hr>
                         <div class="form-group">
@@ -142,15 +142,27 @@
                     @if($currentStep >= 3)
 
                     <div class="step3 {{ $currentStep != 3 ? 'displayNone' : '' }}" id="step-3">
-                         <div class="bg-loader"  wire:loading > <div class="cv-spinner" >
-                          <span class="spinner2"></span>
-                        </div></div>
+                       
+                        <div class="loading"  wire:loading wire:target="submitorder">
+                            <div class="load">
+                                <div class="spinner-border text-dark" role="status"><span class="sr-only"></span></div>
+                            </div>
+                        </div>
+
                  
                         <div style="margin: 15px 0px;" class="d-flex justify-content-between">
                             <div style="font-size: 20px; font-weight: 600;">Bill pay with card</div>
                             <form action="{{ url('/checkout-card/'.$slottime.'/'.$instruction)}}" method="POST">
                               @csrf
                               <button class="btn-book" style="margin-right: 10px;"><span>Pay </span></button>
+
+                            </form>
+                        </div>
+                        <div style="margin: 15px 0px;" class="d-flex justify-content-between">
+                            <div style="font-size: 20px; font-weight: 600;">Bill pay with cash on delivery</div>
+                            <form method="post" wire:submit.prevent="submitorder">
+                              @csrf
+                              <button wire:target="submitorder" class="btn-book" style="margin-right: 10px;"><span>Pay </span></button>
 
                             </form>
                         </div>
@@ -206,24 +218,27 @@
                                 @endif
                             </td>
                             <td class="cptdy">{{$cartdata->qty}}</td>
-                            <th class="cptdy"><span style="color: #333;">Rs.{{number_format($cartdata->price,2)}}</span></th>
+                            <th class="cptdy"><span style="color: #333;">Rs.{{number_format($cartdata->price)}}</span></th>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
                 <div class="d-flex align-items-center justify-content-between" style="margin-top: 20px;">
                     <h6>Items Price</h6>
-                    <strong>Rs.{{number_format($itemsprice,2)}}</strong>
+                    @php $itemsprisce = str_replace('.00', '', $itemsprice); @endphp
+               
+                    <strong>Rs.{{$itemsprisce}}</strong>
                 </div>
 
                 <div class="d-flex align-items-center justify-content-between">
                     <h6>New User Discount</h6>
-                    <strong>15%</strong>
+                    <strong>0%</strong>
                 </div>
                  <hr>
                 <div class="d-flex align-items-center justify-content-between">
                     <h3>Payable</h3>
-                    <h3>Rs.{{number_format( $payable,2)}}</h3>
+                    @php $numberWithoutDecimal = str_replace('.00', '', $payable); @endphp
+                    <h3>Rs.{{$numberWithoutDecimal}}</h3>
                 </div>
                 @else
                     <div style="text-align: center;">

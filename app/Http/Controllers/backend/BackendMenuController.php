@@ -13,6 +13,7 @@ use Validator;
 use Str;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 class BackendMenuController extends Controller
 {
     public function index(Request $request){
@@ -46,7 +47,7 @@ class BackendMenuController extends Controller
 
                     })  
                     ->addColumn('menuprice', function($data) {
-                      $price = '$'.$data->price;
+                      $price = 'Rs.'.number_format($data->price);
                       return  $price ;
 
                     }) 
@@ -107,5 +108,36 @@ class BackendMenuController extends Controller
                return view('back.pages.addedit-menu')->with(compact('title','menudata'));
             }
         } 
+    }
+     public function multipledelete(Request $request){
+        
+        $r_id = $request->input('id');
+        $r = Menu::whereIn('id', $r_id);  
+        $deleteimages = Menu::whereIn('id', $r_id)->get();
+        
+        foreach ($deleteimages as $deleteimage) {
+             if(Storage::exists('public/'.$deleteimage->image)){
+                Storage::delete('public/'.$deleteimage->image);
+            }
+        }
+ 
+        if($r->delete())
+         return response()->json(['success' => 'Menu Seleted Data Deleted Successfully']);   
+    }
+
+    public function alldelete(){
+        $data = DB::table('menus')->get();
+      
+        foreach ($data as $imagePath) {
+            if(Storage::exists('public/'.$imagePath->image)){
+                Storage::delete('public/'.$imagePath->image);
+            }
+        }
+        $rdel = DB::table('menus')->delete();
+        if($rdel == true ){
+            return response()->json(['success' => 'Menus Seleted Data Deleted Successfully']); 
+        }else {
+          return response()->json(['error' => 'Menus table is empty']); 
+         }
     } 
 }

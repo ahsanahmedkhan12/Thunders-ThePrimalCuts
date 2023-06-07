@@ -123,5 +123,20 @@ class AddEditCategory extends Component
         }
 
     }
+    protected function cleanupOldUploads()
+    {
+        $storage = Storage::disk('local');
+
+        foreach ($storage->allFiles('livewire-tmp') as $filePathname) {
+
+            if (! $storage->exists($filePathname)) continue;
+
+            $yesterdaysStamp = now()->subSeconds(4)->timestamp;
+            if ($yesterdaysStamp > $storage->lastModified($filePathname)) {
+                $storage->delete($filePathname);
+            }
+        }
+    }
+
 
 }
